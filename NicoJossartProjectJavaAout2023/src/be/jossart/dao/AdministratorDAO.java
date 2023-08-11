@@ -30,7 +30,7 @@ public class AdministratorDAO extends DAO<Administrator> {
 
 	@Override
 	public Administrator find(int id) {
-Administrator administrator = null;
+		Administrator administrator = null;
 		
 		String query = "SELECT * FROM Users WHERE id_user ='" + id + "'";
 

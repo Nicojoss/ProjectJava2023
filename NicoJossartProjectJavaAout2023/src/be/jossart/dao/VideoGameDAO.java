@@ -64,7 +64,6 @@ public class VideoGameDAO extends DAO<VideoGame> {
 		String query = "SELECT Id_videogame, Name_videogame, Console, Credit_cost FROM VideoGame";
         
 		try {
-            
             try (PreparedStatement stmt = this.connect.prepareStatement(query);
                  ResultSet resultSet = stmt.executeQuery()) {
 
@@ -84,5 +83,4 @@ public class VideoGameDAO extends DAO<VideoGame> {
 
         return videoGameList;
 	}
-
 }

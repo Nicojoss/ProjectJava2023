@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import be.jossart.connection.DbConnection;
 import be.jossart.pojo.Player;
 import be.jossart.pojo.Users;
 
@@ -102,4 +103,22 @@ public class PlayerDAO extends DAO<Player>{
 		return null;
 	}
 
+	public static boolean UpdateCredit(Player player) {
+		boolean success = false;
+		Connection connect = DbConnection.getInstance();
+
+        String query = "UPDATE Player SET Credit = ? WHERE id_user = ?";
+
+        try (PreparedStatement stmt = connect.prepareStatement(query)) {
+            stmt.setInt(1, player.getCredit());
+            stmt.setInt(2, player.getIdUser());
+
+            int rowsAffected = stmt.executeUpdate();
+            success = rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+	}
 }

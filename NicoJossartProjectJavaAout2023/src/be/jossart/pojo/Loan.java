@@ -1,18 +1,28 @@
 package be.jossart.pojo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
+import be.jossart.dao.AbstractDAOFactory;
+import be.jossart.dao.DAO;
 
 public class Loan implements Serializable{
 	private static final long serialVersionUID = 1630024894287292444L;
 	private int idLoan;
-	private Date startDate;
-	private Date endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private boolean ongoing;
 	private Player borrower;
 	private Player lender;
 	private Copy copy;
 	
+	public Loan(LocalDate startDate, LocalDate endDate, Player player, Copy selectedCopy) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		lender = selectedCopy.getOwner();
+		borrower = player;
+		copy = selectedCopy;
+	}
 	// Getter Setter
 	public int getIdLoan() {
 		return idLoan;
@@ -20,16 +30,16 @@ public class Loan implements Serializable{
 	public void setIdLoan(int idLoan) {
 		this.idLoan = idLoan;
 	}
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	public boolean isOngoing() {
@@ -55,6 +65,13 @@ public class Loan implements Serializable{
 	}
 	public void setCopy(Copy copy) {
 		this.copy = copy;
+	}
+	
+	//Methodes 
+	public boolean AddLoan(Loan loan) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Loan> laonDAO = adf.getLoanDAO();
+		return laonDAO.create(loan);
 	}
 
 }

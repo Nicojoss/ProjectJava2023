@@ -1,13 +1,16 @@
 package be.jossart.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import be.jossart.dao.AbstractDAOFactory;
+import be.jossart.dao.CopyDAO;
 import be.jossart.dao.DAO;
 
 public class Copy implements Serializable{
 	private static final long serialVersionUID = -241157985437282599L;
 	private int idCopy;
+	private boolean available;
 	private Player owner;
 	private VideoGame videoGame;
 	private Loan loan;
@@ -15,6 +18,14 @@ public class Copy implements Serializable{
 	public Copy(VideoGame selectedGame, Player player) {
 		videoGame = selectedGame;
 		owner = player;
+	}
+	public Copy() {
+	}
+	public Copy(int idCopy, boolean available, Player player, VideoGame game) {
+		this.idCopy = idCopy;
+		this.setAvailable(available);
+		this.owner = player;
+		this.videoGame = game;
 	}
 	//getter setter
 	public int getIdCopy() {
@@ -41,6 +52,14 @@ public class Copy implements Serializable{
 	public void setLoan(Loan loan) {
 		this.loan = loan;
 	}
+	public boolean getAvailable() {
+		return available;
+	}
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+	
+	//Methodes
 	public boolean AddCopy(Copy copy) {
 		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
 		DAO<Copy> copyDAO = adf.getCopyDAO();
@@ -48,5 +67,17 @@ public class Copy implements Serializable{
 		
 		
 	}
-
+	public static List<Copy> findAll() {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Copy> copyDAO = adf.getCopyDAO();
+		return copyDAO.findAll();
+	}
+	public boolean UpdateAvailable(Copy selectedCopy) {
+		return CopyDAO.UpdateAvailable(selectedCopy);
+		
+	}
+	@Override
+    public String toString() {
+        return "Game: " + getVideoGame().getName() + " Console: " + getVideoGame().getConsole() + " credits: " + getVideoGame().getCreditCost();
+    }
 }

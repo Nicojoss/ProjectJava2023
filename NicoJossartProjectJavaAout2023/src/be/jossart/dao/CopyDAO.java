@@ -2,10 +2,14 @@ package be.jossart.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import be.jossart.connection.DbConnection;
 import be.jossart.pojo.Copy;
+import be.jossart.pojo.Player;
+import be.jossart.pojo.VideoGame;
 
 public class CopyDAO extends DAO<Copy> {
 
@@ -54,8 +58,66 @@ public class CopyDAO extends DAO<Copy> {
 
 	@Override
 	public ArrayList<Copy> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Copy> CopyList = new ArrayList<Copy>();
+		
+		String query = "SELECT * FROM Copy "
+				+ "Inner join Player On Copy.id_user = Player.id_user "
+				+ "Inner Join VideoGame on Copy.Id_videogame = VideoGame.Id_videogame";
+        
+		try {
+            
+            try (PreparedStatement stmt = this.connect.prepareStatement(query);
+                 ResultSet resultSet = stmt.executeQuery()) {
+
+                while (resultSet.next()) {
+                	//COPY
+                	int idCopy = resultSet.getInt("Id_copy");
+                	boolean available = resultSet.getBoolean("Available");
+                	
+                	//VIDEOGAME
+                	int idVideogame = resultSet.getInt("Id_videogame");
+                	String nameVideoGame = resultSet.getString("VideoGame.Name_videogame");
+                	int creditCost = resultSet.getInt("VideoGame.Credit_cost");
+                	String console = resultSet.getString("VideoGame.Console");
+                	VideoGame game = new VideoGame(idVideogame, nameVideoGame, creditCost, console);
+                	
+                	//player
+                	int idPlayer = resultSet.getInt("id_user");
+                	int credit = resultSet.getInt("Player.Credit");
+                	String pseudoPlayer = resultSet.getString("Player.Pseudo");
+                	Player player = new Player(idPlayer, pseudoPlayer, credit);
+                	
+                    Copy copy = new Copy(idCopy, available, player, game);
+                    CopyList.add(copy);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return CopyList;
 	}
 
+	// Methodes
+	public static boolean UpdateAvailable(Copy selectedCopy) {
+		
+		boolean success = false;
+		Connection connect = DbConnection.getInstance();
+		
+	    String query = "UPDATE Copy SET Available = ? WHERE id_copy = ?";
+
+	    try (PreparedStatement stmt = connect.prepareStatement(query)){
+	    	stmt.setBoolean(1, selectedCopy.getAvailable());
+	    	stmt.setInt(2, selectedCopy.getIdCopy());
+
+	        int rowsAffected = stmt.executeUpdate();
+	        success = rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    
+	    return success;
+	    }
+		
+	    return success;
+	}
 }

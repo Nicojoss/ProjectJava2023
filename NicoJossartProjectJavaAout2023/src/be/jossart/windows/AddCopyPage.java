@@ -35,7 +35,7 @@ public class AddCopyPage extends JFrame {
 		setContentPane(contentPane);
 	    contentPane.setLayout(null);
 		
-	    backButton.setBounds(102, 10, 146, 21);
+	    backButton.setBounds(119, 10, 146, 21);
 		backButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        PlayerPage playerPage = new PlayerPage(player);

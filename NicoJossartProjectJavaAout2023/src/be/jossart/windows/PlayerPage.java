@@ -25,10 +25,11 @@ public class PlayerPage extends JFrame {
 	JButton backButton = new JButton("Return HomePage");
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
+	JButton rentCopyButton = new JButton("Rent Copy");
 
 	public PlayerPage(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 688, 562);
+		setBounds(100, 100, 758, 562);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -65,6 +66,16 @@ public class PlayerPage extends JFrame {
             }
         });
         contentPane.add(addCopyButton);
+        
+        rentCopyButton.setBounds(140, 480, 100, 25);
+        rentCopyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                RentCopyPage rentCopyPage = new RentCopyPage(player);
+                rentCopyPage.setVisible(true);
+                dispose();
+            }
+        });
+        contentPane.add(rentCopyButton);
 		
 	}
 	

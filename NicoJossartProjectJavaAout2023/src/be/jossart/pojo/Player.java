@@ -2,6 +2,7 @@ package be.jossart.pojo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import be.jossart.dao.PlayerDAO;
 
 public class Player extends Users{
 	private static final long serialVersionUID = 6023304013003822017L;
@@ -88,5 +89,10 @@ public class Player extends Users{
 
 	public void setBookings(ArrayList<Booking> bookings) {
 		this.bookings = bookings;
+	}
+
+	public boolean UpdateCredit(Player player) {
+		return PlayerDAO.UpdateCredit(player);
+		
 	}
 }

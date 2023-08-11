@@ -35,6 +35,13 @@ public class VideoGame implements Serializable{
 		this.creditCost = creditCost;
 	}
 
+	public VideoGame(int idVideogame, String nameVideoGame, int creditCost, String console) {
+		id_videogame = idVideogame;
+		this.name = nameVideoGame;
+		this.console = console;
+		this.creditCost = creditCost;
+	}
+
 	//GET SET
 	public String getName() {
 		return name;
