@@ -22,7 +22,7 @@ public class PlayerPage extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	List<VideoGame> videoGameList = new ArrayList<>();
-	JButton backButton = new JButton("Return PlayerPage");
+	JButton backButton = new JButton("Return HomePage");
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
 
