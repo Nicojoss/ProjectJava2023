@@ -62,7 +62,7 @@ public class LoginPage extends JFrame{
 	                try {
 	                    Object user = Users.login(TfPseudo.getText(), stringPassword);
 	                    if (user instanceof Player) {
-	                        PlayerPage playerPage = new PlayerPage();
+	                        PlayerPage playerPage = new PlayerPage((Player) user);
 	                        playerPage.setVisible(true);
 	                        dispose();
 	                    } else {

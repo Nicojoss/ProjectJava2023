@@ -95,4 +95,9 @@ public class VideoGame implements Serializable{
 		DAO<VideoGame> videoGameDAO = adf.getVideoGameDAO();
 		return videoGameDAO.create(game); 
 	}
+	
+	@Override
+    public String toString() {
+        return getName() + " (" + getConsole() + ") - Credit Cost: " + getCreditCost();
+    }
 }

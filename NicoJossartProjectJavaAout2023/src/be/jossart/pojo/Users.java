@@ -1,16 +1,11 @@
 package be.jossart.pojo;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
-import be.jossart.connection.DbConnection;
 import be.jossart.dao.AbstractDAOFactory;
-import be.jossart.dao.AdministratorDAO;
 import be.jossart.dao.DAO;
-import be.jossart.dao.PlayerDAO;
+import be.jossart.dao.UsersDAO;
 
 public class Users implements Serializable{
 	private static final long serialVersionUID = 473122234366668086L;
@@ -85,30 +80,7 @@ public class Users implements Serializable{
 	
 	// methodes
 	public static Users login(String username, String password) throws Exception {
-		Users user = null;
-		Connection conn = DbConnection.getInstance();
-		
-		String query = "SELECT * FROM Users WHERE Username='" + username + "' AND Password='" + password + "'";
-		try {
-			ResultSet result = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery(query);
-			if (result.first()) {
-				int id = result.getInt("id_user");
-				boolean admin = result.getBoolean("Admin");
-				if (admin == true) {
-					AdministratorDAO administratorDAO = new AdministratorDAO(conn);
-					user = administratorDAO.find(id);
-				} else {
-					PlayerDAO playerDAO = new PlayerDAO(conn);
-					user = playerDAO.find(id);
-				}
-			} else {
-				throw new Exception("Incorrect username or password !");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return user;
+		return UsersDAO.login(username, password);
 	}
 	
 	public boolean Register(Player player) {

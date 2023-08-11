@@ -61,7 +61,7 @@ public class VideoGameDAO extends DAO<VideoGame> {
 	public ArrayList<VideoGame> findAll() {
 		ArrayList<VideoGame> videoGameList = new ArrayList<VideoGame>();
 		
-		String query = "SELECT Name_videogame, Console, Credit_cost FROM VideoGame";
+		String query = "SELECT Id_videogame, Name_videogame, Console, Credit_cost FROM VideoGame";
         
 		try {
             
@@ -69,11 +69,12 @@ public class VideoGameDAO extends DAO<VideoGame> {
                  ResultSet resultSet = stmt.executeQuery()) {
 
                 while (resultSet.next()) {
+                	int id = resultSet.getInt("Id_videogame");
                     String name = resultSet.getString("Name_videogame");
                     String console = resultSet.getString("Console");
                     int creditCost = resultSet.getInt("Credit_cost");
 
-                    VideoGame game = new VideoGame(name, console, creditCost);
+                    VideoGame game = new VideoGame(id, name, console, creditCost);
                     videoGameList.add(game);
                 }
             }

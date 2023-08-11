@@ -1,6 +1,8 @@
 package be.jossart.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import be.jossart.pojo.Copy;
@@ -14,8 +16,22 @@ public class CopyDAO extends DAO<Copy> {
 
 	@Override
 	public boolean create(Copy obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String query = "INSERT INTO Copy (Id_videogame, id_user) VALUES (?, ?)";
+
+	    try (PreparedStatement stmt = this.connect.prepareStatement(query)) {
+	        stmt.setInt(1, obj.getVideoGame().getId_videogame());
+	        stmt.setInt(2, obj.getOwner().getIdUser());
+
+	        stmt.executeUpdate();
+	        
+	        success = true;
+	        return success;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return success;
 	}
 
 	@Override
