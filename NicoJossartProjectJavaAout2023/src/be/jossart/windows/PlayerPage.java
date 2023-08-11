@@ -22,7 +22,7 @@ public class PlayerPage extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	List<VideoGame> videoGameList = new ArrayList<>();
-	JButton backButton = new JButton("Return HomePage");
+	JButton backButton = new JButton("Return PlayerPage");
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
 
@@ -34,7 +34,7 @@ public class PlayerPage extends JFrame {
 
 		setContentPane(contentPane);
 		
-		backButton.setBounds(10, 10, 146, 21);
+		backButton.setBounds(10, 10, 168, 21);
 		backButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        Home homePage = new Home();
