@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -54,7 +55,7 @@ public class RentCopyPage extends JFrame {
 		
 		
 		JLabel lblAvailableCredits = new JLabel(player.getPseudo() + " Available Credits: " + player.getCredit());
-        lblAvailableCredits.setBounds(0, 58, 426, 13);
+        lblAvailableCredits.setBounds(0, 58, 537, 13);
         contentPane.add(lblAvailableCredits);
         
         lblTitle.setBounds(0, 81, 555, 20);
@@ -111,11 +112,29 @@ public class RentCopyPage extends JFrame {
                 				}
                 				dispose();
                 			} else {
-                				lb_error.setText("You don't have enough credit!" + player.getCredit());
+                				lb_error.setText("You don't have enough credit!" + player.getCredit() + "you can rent games to earn credits!");
                 			}
                 		} else {
                 			lb_error.setText("Unfortunately the copy is already rented!");
                 			// Rajouter la possiblité de faire une reservation pour ce jeux.
+                			JButton reserveButton = new JButton("Reserve Copy");
+                			reserveButton.setBounds(110, 185, 120, 25);
+                			reserveButton.addActionListener(new ActionListener() {
+                			    public void actionPerformed(ActionEvent e) {
+                			        Copy selectedCopy = (Copy) copyComboBox.getSelectedItem();
+
+                			        if (!selectedCopy.getAvailable()) {
+                			            int option = JOptionPane.showConfirmDialog(null, "The copy is already rented. Do you want to reserve it?", "Reservation", JOptionPane.YES_NO_OPTION);
+                			            if (option == JOptionPane.YES_OPTION) {
+                			            	//Check la date de remise du jeux (si le joueur la rend en retard)
+                			                //Booking booking = new Booking();
+                			            }
+                			        } else {
+                			            lb_error.setText("The copy is already available for rent.");
+                			        }
+                			    }
+                			});
+                			contentPane.add(reserveButton);
                 		}
                 	} else {
                     lb_error.setText("Please enter a valid number of weeks (1 to 4)");

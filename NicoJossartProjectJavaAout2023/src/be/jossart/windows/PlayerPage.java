@@ -1,8 +1,10 @@
 package be.jossart.windows;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +29,9 @@ public class PlayerPage extends JFrame {
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
 	JButton rentCopyButton = new JButton("Rent Copy");
+	JButton myLoansButton = new JButton("My loans");
+	LocalDate today = LocalDate.now();
+	JLabel birthdayLabel = new JLabel("");
 
 	public PlayerPage(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,6 +82,29 @@ public class PlayerPage extends JFrame {
             }
         });
         contentPane.add(rentCopyButton);
+        
+        /*myLoansButton.setBounds(260, 480, 100, 25);
+        myLoansButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MyLoansPage myLoansPage = new MyLoansPage(player);
+                myLoansPage.setVisible(true);
+                dispose();
+            }
+        });
+        contentPane.add(myLoansButton);*/
+        
+        birthdayLabel.setForeground(Color.GREEN);
+        birthdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        birthdayLabel.setBounds(234, 10, 500, 20);
+        contentPane.add(birthdayLabel);
+        getContentPane().add(birthdayLabel);
+        
+        if(player.getDateRegistration().isEqual(today)) {
+        	player.setCredit(player.getCredit() + 2);
+        	player.UpdateCredit(player);
+            
+            birthdayLabel.setText("Happy Birthday! You have received 2 credits as a gift!");
+        }
 		
 	}
 	
