@@ -79,7 +79,13 @@ public class RentCopyPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Copy selectedCopy = (Copy) copyComboBox.getSelectedItem();
                 String weeksStr = weeksTextField.getText();
-                int nbrWeeksRent = Integer.parseInt(weeksStr);
+                int nbrWeeksRent = 0;
+                if(weeksStr.isEmpty()) {
+                	lb_error.setText("Please enter the number of weeks to rent.");
+                }else {
+                	nbrWeeksRent = Integer.parseInt(weeksStr);
+                }
+                
                 
              // 1: Check if the copy belongs to the player
                 if (selectedCopy.getOwner().equals(player)) {

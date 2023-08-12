@@ -2,9 +2,11 @@ package be.jossart.pojo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import be.jossart.dao.AbstractDAOFactory;
 import be.jossart.dao.DAO;
+import be.jossart.dao.LoanDAO;
 
 public class Loan implements Serializable{
 	private static final long serialVersionUID = 1630024894287292444L;
@@ -22,6 +24,13 @@ public class Loan implements Serializable{
 		lender = selectedCopy.getOwner();
 		borrower = player;
 		copy = selectedCopy;
+	}
+	public Loan(int loanId, LocalDate startDate, LocalDate endDate, Copy copy, boolean ongoing) {
+		idLoan = loanId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.copy = copy;
+		this.ongoing = ongoing;
 	}
 	// Getter Setter
 	public int getIdLoan() {
@@ -70,8 +79,26 @@ public class Loan implements Serializable{
 	//Methodes 
 	public boolean AddLoan(Loan loan) {
 		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
-		DAO<Loan> laonDAO = adf.getLoanDAO();
-		return laonDAO.create(loan);
+		DAO<Loan> loanDAO = adf.getLoanDAO();
+		return loanDAO.create(loan);
 	}
+	
+	public static List<Loan> FindMyBorrowings(Player player) {
+		return LoanDAO.FindMyBorrowings(player.getIdUser());
+	}
+	
+	public boolean UpdateLoan(Loan selectedLoan) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Loan> loanDAO = adf.getLoanDAO();
+		return loanDAO.update(selectedLoan);
+	}
+
+	@Override
+	public String toString() {
+		return "Game: " + copy.getVideoGame().getName() + " Console: " + copy.getVideoGame().getConsole() 
+				+ " StartDate: " + startDate + " EndDate " + endDate;
+	}
+	
+	
 
 }

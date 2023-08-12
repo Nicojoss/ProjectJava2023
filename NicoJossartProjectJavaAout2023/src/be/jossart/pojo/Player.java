@@ -2,6 +2,9 @@ package be.jossart.pojo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import be.jossart.dao.AbstractDAOFactory;
+import be.jossart.dao.DAO;
 import be.jossart.dao.PlayerDAO;
 
 public class Player extends Users{
@@ -94,5 +97,11 @@ public class Player extends Users{
 	public boolean UpdateCredit(Player player) {
 		return PlayerDAO.UpdateCredit(player);
 		
+	}
+
+	public static Player findById(int id_owner) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Player> playerDAO = adf.getPlayerDAO();
+		return playerDAO.find(id_owner);
 	}
 }

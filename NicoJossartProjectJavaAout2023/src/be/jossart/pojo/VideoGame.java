@@ -107,4 +107,10 @@ public class VideoGame implements Serializable{
     public String toString() {
         return getName() + " (" + getConsole() + ") - Credit Cost: " + getCreditCost();
     }
+
+	public static VideoGame findById(int id_game) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<VideoGame> videoGameDAO = adf.getVideoGameDAO();
+		return videoGameDAO.find(id_game);
+	}
 }

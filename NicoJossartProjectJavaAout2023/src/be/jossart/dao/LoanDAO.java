@@ -2,9 +2,14 @@ package be.jossart.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
+import be.jossart.connection.DbConnection;
+import be.jossart.pojo.Copy;
 import be.jossart.pojo.Loan;
 
 public class LoanDAO extends DAO<Loan> {
@@ -45,8 +50,27 @@ public class LoanDAO extends DAO<Loan> {
 
 	@Override
 	public boolean update(Loan obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+
+	    String query = "UPDATE Loan SET Start_date = ?, End_date = ?, id_lender = ?, id_borrower = ?, Id_copy = ?, Ongoing = ? WHERE id_loan = ?";
+
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setDate(1, java.sql.Date.valueOf(obj.getStartDate()));
+	        //Keep track of the date the player returned the game
+	        preparedStatement.setDate(2, java.sql.Date.valueOf(LocalDate.now())); 
+	        preparedStatement.setInt(3, obj.getCopy().getOwner().getIdUser());
+	        preparedStatement.setInt(4, obj.getBorrower().getIdUser());
+	        preparedStatement.setInt(5, obj.getCopy().getIdCopy());
+	        preparedStatement.setBoolean(6, obj.isOngoing());
+	        preparedStatement.setInt(7, obj.getIdLoan());
+
+	        preparedStatement.executeUpdate();
+	        success = true;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return success;
 	}
 
 	@Override
@@ -59,6 +83,41 @@ public class LoanDAO extends DAO<Loan> {
 	public ArrayList<Loan> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	//Methodes
+	public static List<Loan> FindMyBorrowings(int id){
+		List<Loan> myBorrowings = new ArrayList<>();
+	    Connection connect = DbConnection.getInstance();
+	    
+	    String query = "SELECT * FROM Loan WHERE id_borrower = ?";
+	    
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id);
+	        
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            while (resultSet.next()) {
+	                int loanId = resultSet.getInt("Id_loan");
+	                boolean onGoing = resultSet.getBoolean("Ongoing");
+	                LocalDate startDate = resultSet.getDate("start_date").toLocalDate();
+	                LocalDate endDate = resultSet.getDate("end_date").toLocalDate();
+	                int copyId = resultSet.getInt("Id_copy");
+	                
+	                if(onGoing) {
+	                	Copy copy = Copy.FindByID(copyId); 
+		                
+		                Loan loan = new Loan(loanId, startDate, endDate, copy, onGoing);
+		                myBorrowings.add(loan);
+	                }
+	                
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return myBorrowings;
+		
 	}
 
 }

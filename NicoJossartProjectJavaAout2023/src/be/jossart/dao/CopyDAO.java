@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import be.jossart.connection.DbConnection;
 import be.jossart.pojo.Copy;
 import be.jossart.pojo.Player;
+import be.jossart.pojo.Users;
 import be.jossart.pojo.VideoGame;
 
 public class CopyDAO extends DAO<Copy> {
@@ -52,8 +53,28 @@ public class CopyDAO extends DAO<Copy> {
 
 	@Override
 	public Copy find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Copy copy = null;
+		String query = "SELECT * FROM Copy WHERE Id_copy = ?";
+	    
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id);
+	        ResultSet result = preparedStatement.executeQuery();
+	        
+	        if (result.next()) {
+	            int copyId = result.getInt("id_copy");
+	            int id_game = result.getInt("Id_videogame");
+	            int id_owner = result.getInt("id_user");
+	            
+	            VideoGame game = VideoGame.findById(id_game);
+	            Player copyOwner = Users.findById(id_owner);
+	            
+	            copy = new Copy(copyId, game, copyOwner);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return copy;
 	}
 
 	@Override

@@ -27,6 +27,11 @@ public class Copy implements Serializable{
 		this.owner = player;
 		this.videoGame = game;
 	}
+	public Copy(int copyId, VideoGame game, Player copyOwner) {
+		idCopy = copyId;
+		videoGame = game;
+		owner = copyOwner;
+	}
 	//getter setter
 	public int getIdCopy() {
 		return idCopy;
@@ -76,8 +81,16 @@ public class Copy implements Serializable{
 		return CopyDAO.UpdateAvailable(selectedCopy);
 		
 	}
+	
+	public static Copy FindByID(int copyId) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Copy> copyDAO = adf.getCopyDAO();
+		return copyDAO.find(copyId);
+	}
+	
 	@Override
     public String toString() {
         return "Game: " + getVideoGame().getName() + " Console: " + getVideoGame().getConsole() + " credits: " + getVideoGame().getCreditCost();
     }
+	
 }

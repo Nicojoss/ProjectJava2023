@@ -22,7 +22,7 @@ public abstract class AbstractDAOFactory {
 	
 	public abstract DAO<Player> getPlayerDAO();
 	
-	public abstract DAO<Users> getUserDAO();
+	public abstract DAO<Users> getUsersDAO();
 	
 	public abstract DAO<VideoGame> getVideoGameDAO();
 

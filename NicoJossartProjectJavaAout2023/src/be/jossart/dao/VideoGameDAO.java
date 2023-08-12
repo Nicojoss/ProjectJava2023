@@ -53,8 +53,26 @@ public class VideoGameDAO extends DAO<VideoGame> {
 
 	@Override
 	public VideoGame find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		VideoGame videoGame = null;
+		String query = "SELECT * FROM VideoGame WHERE Id_videogame = ?";
+	    
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id);
+	        ResultSet result = preparedStatement.executeQuery();
+	        
+	        if (result.next()) {
+	            int Id_game = result.getInt("id_videogame");
+	            String NameGame = result.getString("Name_videogame");
+	            String Console = result.getString("Console");
+	            int creditCost = result.getInt("Credit_cost");
+	            
+	            videoGame = new VideoGame(Id_game, NameGame, Console, creditCost);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return videoGame;
 	}
 
 	@Override

@@ -40,14 +40,12 @@ public class DaoFactory extends AbstractDAOFactory {
 	}
 
 	@Override
-	public DAO<Users> getUserDAO() {
-		// TODO Auto-generated method stub
+	public DAO<Users> getUsersDAO() {
 		return new UsersDAO(conn);
 	}
 
 	@Override
 	public DAO<VideoGame> getVideoGameDAO() {
-		// TODO Auto-generated method stub
 		return new VideoGameDAO(conn);
 	}
 

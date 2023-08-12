@@ -61,15 +61,20 @@ public class LoginPage extends JFrame{
 	                String stringPassword = new String(TfPassword.getPassword());
 	                try {
 	                    Object user = Users.login(TfPseudo.getText(), stringPassword);
-	                    if (user instanceof Player) {
-	                        PlayerPage playerPage = new PlayerPage((Player) user);
-	                        playerPage.setVisible(true);
-	                        dispose();
-	                    } else {
-	                        AdministratorPage adminPage = new AdministratorPage();
-	                        adminPage.setVisible(true);
-	                        dispose();
+	                    if(user != null) {
+	                    	if (user instanceof Player) {
+		                        PlayerPage playerPage = new PlayerPage((Player) user);
+		                        playerPage.setVisible(true);
+		                        dispose();
+		                    } else {
+		                        AdministratorPage adminPage = new AdministratorPage();
+		                        adminPage.setVisible(true);
+		                        dispose();
+		                    }
+	                    }else {
+	                    	lb_error.setText("Pseudo or Password invalid!");
 	                    }
+	                    
 	                } catch (Exception e1) {
 	                    e1.printStackTrace();
 	                }

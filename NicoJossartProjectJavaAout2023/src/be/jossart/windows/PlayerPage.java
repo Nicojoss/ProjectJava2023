@@ -29,7 +29,7 @@ public class PlayerPage extends JFrame {
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
 	JButton rentCopyButton = new JButton("Rent Copy");
-	JButton myLoansButton = new JButton("My loans");
+	JButton myBorrowingsButton = new JButton("My borrowings");
 	LocalDate today = LocalDate.now();
 	JLabel birthdayLabel = new JLabel("");
 
@@ -83,15 +83,15 @@ public class PlayerPage extends JFrame {
         });
         contentPane.add(rentCopyButton);
         
-        /*myLoansButton.setBounds(260, 480, 100, 25);
-        myLoansButton.addActionListener(new ActionListener() {
+        myBorrowingsButton.setBounds(260, 480, 121, 25);
+        myBorrowingsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MyLoansPage myLoansPage = new MyLoansPage(player);
-                myLoansPage.setVisible(true);
+                MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
+                myBorrowingsPage.setVisible(true);
                 dispose();
             }
         });
-        contentPane.add(myLoansButton);*/
+        contentPane.add(myBorrowingsButton);
         
         birthdayLabel.setForeground(Color.GREEN);
         birthdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
