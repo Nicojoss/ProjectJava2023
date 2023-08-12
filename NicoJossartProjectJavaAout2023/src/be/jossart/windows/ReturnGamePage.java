@@ -12,44 +12,62 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import be.jossart.pojo.Copy;
 import be.jossart.pojo.Loan;
 import be.jossart.pojo.Player;
 
 public class ReturnGamePage extends JFrame {
-	private static final long serialVersionUID = -412457287625258396L;
-	private JPanel contentPane;
+    private static final long serialVersionUID = -412457287625258396L;
+    private JPanel contentPane;
     private JLabel titleLabel = new JLabel("Return Game");
     private JButton returnButton = new JButton("Return Game");
-    private JComboBox<Loan> loanComboBox;
+    private JComboBox<Loan> loanComboBox = new JComboBox<>();
 
-	public ReturnGamePage(Player player, List<Loan> myLoans) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    public ReturnGamePage(Player player, List<Loan> myLoans) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+        titleLabel.setBounds(10, 69, 60, 13);
+
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(titleLabel);
 
-        loanComboBox = new JComboBox<>(myLoans.toArray(new Loan[0]));
+        for (Loan loan : myLoans) {
+        	loanComboBox.addItem(loan);
+        }
+        loanComboBox.setBounds(80, 69, 346, 21);
         contentPane.add(loanComboBox);
+        returnButton.setBounds(80, 111, 172, 21);
 
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Loan selectedLoan = (Loan) loanComboBox.getSelectedItem();
                 if (selectedLoan != null) {
-                	selectedLoan.setOngoing(false);
-                	selectedLoan.setBorrower(player);
-                	selectedLoan.UpdateLoan(selectedLoan);
-                	
-                	MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
+                    selectedLoan.setOngoing(false);
+                    selectedLoan.setBorrower(player);
+                    selectedLoan.UpdateLoan(selectedLoan);
+
+                    MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
                     myBorrowingsPage.setVisible(true);
                     dispose();
                 }
             }
         });
         contentPane.add(returnButton);
-	}
+
+        JButton backButton = new JButton("Back to My Borrowings Page");
+        backButton.setBounds(10, 10, 161, 21);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
+                myBorrowingsPage.setVisible(true);
+                dispose();
+            }
+        });
+        contentPane.add(backButton);
+    }
 }
