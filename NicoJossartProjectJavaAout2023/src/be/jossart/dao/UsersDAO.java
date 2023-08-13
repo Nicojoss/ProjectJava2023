@@ -16,8 +16,6 @@ public class UsersDAO extends DAO<Users>{
 		super(conn);
 	}
 
-	
-
 	@Override
 	public boolean create(Users obj) {
 		return false;

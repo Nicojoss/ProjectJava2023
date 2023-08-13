@@ -17,6 +17,7 @@ public class Loan implements Serializable{
 	private Player borrower;
 	private Player lender;
 	private Copy copy;
+	private LocalDate lastPenaltyDate;
 	
 	public Loan(LocalDate startDate, LocalDate endDate, Player player, Copy selectedCopy) {
 		this.startDate = startDate;
@@ -24,13 +25,15 @@ public class Loan implements Serializable{
 		lender = selectedCopy.getOwner();
 		borrower = player;
 		copy = selectedCopy;
+		lastPenaltyDate = null;
 	}
-	public Loan(int loanId, LocalDate startDate, LocalDate endDate, Copy copy, boolean ongoing) {
+	public Loan(int loanId, LocalDate startDate, LocalDate endDate, Copy copy, boolean ongoing, LocalDate lastPenaltyDate) {
 		idLoan = loanId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.copy = copy;
 		this.ongoing = ongoing;
+		this.lastPenaltyDate = lastPenaltyDate;
 	}
 	// Getter Setter
 	public int getIdLoan() {
@@ -76,6 +79,13 @@ public class Loan implements Serializable{
 		this.copy = copy;
 	}
 	
+	public LocalDate getlastPenaltyDate() {
+		return lastPenaltyDate;
+	}
+	public void setlastPenaltyDate(LocalDate lastPenaltyDate) {
+		this.lastPenaltyDate = lastPenaltyDate;
+	}
+	
 	//Methodes 
 	public boolean AddLoan(Loan loan) {
 		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
@@ -92,12 +102,17 @@ public class Loan implements Serializable{
 		DAO<Loan> loanDAO = adf.getLoanDAO();
 		return loanDAO.update(selectedLoan);
 	}
+	
+	public static boolean UpdatePenaltyDate(Loan selectedLoan) {
+		return LoanDAO.UpdatePenaltyDate(selectedLoan);
+	}
 
 	@Override
 	public String toString() {
 		return "Game: " + copy.getVideoGame().getName() + " Console: " + copy.getVideoGame().getConsole() 
 				+ " StartDate: " + startDate + " EndDate " + endDate;
 	}
+	
 	
 	
 

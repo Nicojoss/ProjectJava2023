@@ -33,8 +33,9 @@ public class LoanDAO extends DAO<Loan> {
 	        preparedStatement.setDate(5, java.sql.Date.valueOf(obj.getEndDate()));
 	        preparedStatement.setBoolean(6, true);
 
-	        int rowsAffected = preparedStatement.executeUpdate();
-	        success = rowsAffected > 0;
+	        int result = preparedStatement.executeUpdate();
+	        success = result > 0;
+	        preparedStatement.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -64,8 +65,9 @@ public class LoanDAO extends DAO<Loan> {
 	        preparedStatement.setBoolean(6, obj.isOngoing());
 	        preparedStatement.setInt(7, obj.getIdLoan());
 
-	        preparedStatement.executeUpdate();
-	        success = true;
+	        int result = preparedStatement.executeUpdate();
+	        success = result > 0;
+	        preparedStatement.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -102,11 +104,12 @@ public class LoanDAO extends DAO<Loan> {
 	                LocalDate startDate = resultSet.getDate("start_date").toLocalDate();
 	                LocalDate endDate = resultSet.getDate("end_date").toLocalDate();
 	                int copyId = resultSet.getInt("Id_copy");
+	                LocalDate lastPenaltyDate = resultSet.getDate("LastPenaltyDate").toLocalDate();
 	                
 	                if(onGoing) {
 	                	Copy copy = Copy.FindByID(copyId); 
 		                
-		                Loan loan = new Loan(loanId, startDate, endDate, copy, onGoing);
+		                Loan loan = new Loan(loanId, startDate, endDate, copy, onGoing, lastPenaltyDate);
 		                myBorrowings.add(loan);
 	                }
 	                
@@ -118,6 +121,27 @@ public class LoanDAO extends DAO<Loan> {
 	    
 	    return myBorrowings;
 		
+	}
+
+	public static boolean UpdatePenaltyDate(Loan obj) {
+		boolean success = false;
+		Connection connect = DbConnection.getInstance();
+		
+	    String query = "UPDATE Loan SET LastPenaltyDate = ? WHERE id_loan = ?";
+
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	    	preparedStatement.setDate(1, java.sql.Date.valueOf(obj.getlastPenaltyDate()));
+	    	preparedStatement.setInt(2, obj.getIdLoan());
+	         
+	        
+	        int result = preparedStatement.executeUpdate();
+	        success = result > 0;
+	        preparedStatement.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return success;
 	}
 
 }

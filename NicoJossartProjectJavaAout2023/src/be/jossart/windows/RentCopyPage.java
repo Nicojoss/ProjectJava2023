@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import be.jossart.pojo.Booking;
 import be.jossart.pojo.Copy;
 import be.jossart.pojo.Loan;
 import be.jossart.pojo.Player;
@@ -29,9 +30,10 @@ public class RentCopyPage extends JFrame {
 	JLabel lb_error = new JLabel("");
 	LocalDate StartDate = LocalDate.now();
 	LocalDate EndDate;
-	int nbrWeeksRent;
+	int nbrWeeksRent = 0;
 	private JTextField weeksTextField = new JTextField();
 	JButton backButton = new JButton("Return PlayerPage");
+	
 	
 	public RentCopyPage(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,7 +81,6 @@ public class RentCopyPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Copy selectedCopy = (Copy) copyComboBox.getSelectedItem();
                 String weeksStr = weeksTextField.getText();
-                int nbrWeeksRent = 0;
                 if(weeksStr.isEmpty()) {
                 	lb_error.setText("Please enter the number of weeks to rent.");
                 }else {
@@ -122,7 +123,6 @@ public class RentCopyPage extends JFrame {
                 			}
                 		} else {
                 			lb_error.setText("Unfortunately the copy is already rented!");
-                			// Rajouter la possiblité de faire une reservation pour ce jeux.
                 			JButton reserveButton = new JButton("Reserve Copy");
                 			reserveButton.setBounds(110, 185, 120, 25);
                 			reserveButton.addActionListener(new ActionListener() {
@@ -132,8 +132,15 @@ public class RentCopyPage extends JFrame {
                 			        if (!selectedCopy.getAvailable()) {
                 			            int option = JOptionPane.showConfirmDialog(null, "The copy is already rented. Do you want to reserve it?", "Reservation", JOptionPane.YES_NO_OPTION);
                 			            if (option == JOptionPane.YES_OPTION) {
-                			            	//Check la date de remise du jeux (si le joueur la rend en retard)
-                			                //Booking booking = new Booking();
+                			            	Booking booking = new Booking(LocalDate.now(), player, selectedCopy.getVideoGame(), nbrWeeksRent);
+                			            	if(Booking.CreateBooking(booking)) {
+                			            		RentCopyPage rentCopyPage = new RentCopyPage(player);
+                    			                rentCopyPage.setVisible(true);
+                    			                dispose();
+                			            	}else {
+                			            		lb_error.setText("Error during your booking!");
+                			            	}
+                			                
                 			            }else {
                 			            	RentCopyPage rentCopyPage = new RentCopyPage(player);
                 			                rentCopyPage.setVisible(true);

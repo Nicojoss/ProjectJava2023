@@ -113,8 +113,9 @@ public class PlayerDAO extends DAO<Player>{
             stmt.setInt(1, player.getCredit());
             stmt.setInt(2, player.getIdUser());
 
-            int rowsAffected = stmt.executeUpdate();
-            success = rowsAffected > 0;
+            int result = stmt.executeUpdate();
+            success = result > 0;
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

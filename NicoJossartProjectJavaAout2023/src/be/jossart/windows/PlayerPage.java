@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +30,8 @@ public class PlayerPage extends JFrame {
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
 	JButton rentCopyButton = new JButton("Rent Copy");
-	JButton myBorrowingsButton = new JButton("My borrowings");
+	JButton myBorrowingsButton = new JButton("My Borrowings");
+	JButton myBookingsButton = new JButton("My Bookings");
 	LocalDate today = LocalDate.now();
 	JLabel birthdayLabel = new JLabel("");
 
@@ -63,6 +65,10 @@ public class PlayerPage extends JFrame {
 		videoGameList = VideoGame.FindAll();
 		updateTable();
 		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(30, 71, 634, 398);
+		contentPane.add(scrollPane);
+		
 		addCopyButton.setBounds(20, 480, 100, 25);
         addCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -83,7 +89,7 @@ public class PlayerPage extends JFrame {
         });
         contentPane.add(rentCopyButton);
         
-        myBorrowingsButton.setBounds(260, 480, 121, 25);
+        myBorrowingsButton.setBounds(257, 480, 121, 25);
         myBorrowingsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
@@ -92,6 +98,16 @@ public class PlayerPage extends JFrame {
             }
         });
         contentPane.add(myBorrowingsButton);
+        
+        myBookingsButton.setBounds(399, 480, 121, 25);
+        myBookingsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MyBookingsPage myBorrowingsPage = new MyBookingsPage(player);
+                myBorrowingsPage.setVisible(true);
+                dispose();
+            }
+        });
+        contentPane.add(myBookingsButton);
         
         birthdayLabel.setForeground(Color.GREEN);
         birthdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,9 +126,7 @@ public class PlayerPage extends JFrame {
 	
 	private void updateTable() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Nom");
-        model.addColumn("Console");
-        model.addColumn("Crédits");
+        model.setColumnIdentifiers(new Object[]{"Nom", "Console", "Crédits"});
 
         for (VideoGame game : videoGameList) {
             model.addRow(new Object[]{game.getName(), game.getConsole(), game.getCreditCost()});

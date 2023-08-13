@@ -13,7 +13,6 @@ public class VideoGameDAO extends DAO<VideoGame> {
 
 	public VideoGameDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -29,9 +28,9 @@ public class VideoGameDAO extends DAO<VideoGame> {
 	        stmt.setInt(3, obj.getCreditCost());
 	        stmt.setString(4, obj.getConsole());
 
-	        stmt.executeUpdate();
+	        int result = stmt.executeUpdate();
 	        
-	        success = true;
+	        success = result > 0;
 	        return success;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -42,7 +41,6 @@ public class VideoGameDAO extends DAO<VideoGame> {
 
 	@Override
 	public boolean delete(VideoGame obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -56,8 +54,8 @@ public class VideoGameDAO extends DAO<VideoGame> {
 	        stmt.setInt(1, obj.getCreditCost());
 	        stmt.setInt(2, obj.getId_videogame());
 	        
-	        stmt.executeUpdate();
-	        success = true;
+	        int result = stmt.executeUpdate();
+	        success = result > 0;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return success;

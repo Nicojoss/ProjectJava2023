@@ -27,10 +27,10 @@ public class CopyDAO extends DAO<Copy> {
 	        stmt.setInt(1, obj.getVideoGame().getId_videogame());
 	        stmt.setInt(2, obj.getOwner().getIdUser());
 
-	        stmt.executeUpdate();
+	        int result = stmt.executeUpdate();
 	        
-	        success = true;
-	        return success;
+	        success = result > 0;
+	        stmt.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -54,8 +54,9 @@ public class CopyDAO extends DAO<Copy> {
 	        stmt.setBoolean(1, obj.getAvailable());
 	        stmt.setInt(2, obj.getIdCopy());
 	        
-	        stmt.executeUpdate();
-	        success = true;
+	        int result = stmt.executeUpdate();
+	        success = result > 0;
+	        stmt.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return success;
@@ -144,8 +145,9 @@ public class CopyDAO extends DAO<Copy> {
 	    	stmt.setBoolean(1, selectedCopy.getAvailable());
 	    	stmt.setInt(2, selectedCopy.getIdCopy());
 
-	        int rowsAffected = stmt.executeUpdate();
-	        success = rowsAffected > 0;
+	        int result = stmt.executeUpdate();
+	        success = result > 0;
+	        stmt.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    

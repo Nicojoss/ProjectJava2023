@@ -43,18 +43,22 @@ public class MyBorrowingsPage extends JFrame {
             data[i][4] = daysLate > 0 ? (loan.getCopy().getVideoGame().getCreditCost()) * daysLate : "0";
             data[i][5] = loan.isOngoing();
             
-            if(loan.isOngoing()) {
-            	if(daysLate > 0) {
+            LocalDate lastpenaltyDate = loan.getlastPenaltyDate();
+            if(lastpenaltyDate == null || lastpenaltyDate.isBefore(LocalDate.now())) {
+            	loan.setlastPenaltyDate(LocalDate.now());
+            	Loan.UpdatePenaltyDate(loan);
+            	
+            	lastpenaltyDate = loan.getlastPenaltyDate();
+            	if(loan.isOngoing() && daysLate > 0) {
                 	// Decrease the player's credits by 5
                 	player.setCredit(player.getCredit() - 5);
                 	player.UpdateCredit(player);
                 	
                 	// Increase game owner credits by 5
                 	loan.getCopy().getOwner().setCredit(loan.getCopy().getOwner().getCredit() + 5);
-                	loan.getCopy().getOwner().UpdateCredit(loan.getCopy().getOwner());
-                }
-            }
-            
+                	loan.getCopy().getOwner().UpdateCredit(loan.getCopy().getOwner());		
+            	}
+            } 
         }
         contentPane.setLayout(null);
 
