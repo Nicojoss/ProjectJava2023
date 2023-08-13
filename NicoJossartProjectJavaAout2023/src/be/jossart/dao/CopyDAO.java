@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import be.jossart.connection.DbConnection;
 import be.jossart.pojo.Copy;
 import be.jossart.pojo.Player;
-import be.jossart.pojo.Users;
 import be.jossart.pojo.VideoGame;
 
 public class CopyDAO extends DAO<Copy> {
@@ -66,7 +65,7 @@ public class CopyDAO extends DAO<Copy> {
 	            int id_owner = result.getInt("id_user");
 	            
 	            VideoGame game = VideoGame.findById(id_game);
-	            Player copyOwner = Users.findById(id_owner);
+	            Player copyOwner = Player.findById(id_owner);
 	            
 	            copy = new Copy(copyId, game, copyOwner);
 	        }

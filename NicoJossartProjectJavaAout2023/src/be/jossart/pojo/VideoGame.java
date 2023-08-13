@@ -113,4 +113,11 @@ public class VideoGame implements Serializable{
 		DAO<VideoGame> videoGameDAO = adf.getVideoGameDAO();
 		return videoGameDAO.find(id_game);
 	}
+
+	public static boolean UpdateCredit(VideoGame selectedGame) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<VideoGame> videoGameDAO = adf.getVideoGameDAO();
+		return videoGameDAO.update(selectedGame);
+		
+	}
 }

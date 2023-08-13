@@ -88,10 +88,4 @@ public class Users implements Serializable{
 		DAO<Player> playerDAO = adf.getPlayerDAO();
 		return playerDAO.create(player);
 	}
-	public static Player findById(int id_owner) {
-		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
-		DAO<Users> usersDAO = adf.getUsersDAO();
-		return (Player) usersDAO.find(id_owner);
-	}
-
 }

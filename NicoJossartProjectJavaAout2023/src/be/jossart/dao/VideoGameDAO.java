@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import be.jossart.connection.DbConnection;
 import be.jossart.pojo.VideoGame;
 
 public class VideoGameDAO extends DAO<VideoGame> {
@@ -47,8 +48,22 @@ public class VideoGameDAO extends DAO<VideoGame> {
 
 	@Override
 	public boolean update(VideoGame obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+	    Connection conn = DbConnection.getInstance();
+	    String query = "UPDATE VideoGame SET Credit_cost = ? WHERE Id_videogame = ?";
+	    
+	    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+	        stmt.setInt(1, obj.getCreditCost());
+	        stmt.setInt(2, obj.getId_videogame());
+	        
+	        stmt.executeUpdate();
+	        success = true;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return success;
+	    }
+	    
+	    return success;
 	}
 
 	@Override
