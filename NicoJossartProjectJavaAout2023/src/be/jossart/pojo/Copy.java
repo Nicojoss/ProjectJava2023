@@ -92,5 +92,11 @@ public class Copy implements Serializable{
     public String toString() {
         return "Game: " + getVideoGame().getName() + " Console: " + getVideoGame().getConsole() + " credits: " + getVideoGame().getCreditCost();
     }
+	public static boolean Update(Copy copy) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Copy> copyDAO = adf.getCopyDAO();
+		return copyDAO.update(copy);
+		
+	}
 	
 }

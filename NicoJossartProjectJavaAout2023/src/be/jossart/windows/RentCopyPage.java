@@ -134,6 +134,10 @@ public class RentCopyPage extends JFrame {
                 			            if (option == JOptionPane.YES_OPTION) {
                 			            	//Check la date de remise du jeux (si le joueur la rend en retard)
                 			                //Booking booking = new Booking();
+                			            }else {
+                			            	RentCopyPage rentCopyPage = new RentCopyPage(player);
+                			                rentCopyPage.setVisible(true);
+                			                dispose();
                 			            }
                 			        } else {
                 			            lb_error.setText("The copy is already available for rent.");

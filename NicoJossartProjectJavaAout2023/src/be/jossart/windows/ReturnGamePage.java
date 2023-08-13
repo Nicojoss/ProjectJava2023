@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import be.jossart.pojo.Copy;
 import be.jossart.pojo.Loan;
 import be.jossart.pojo.Player;
 
@@ -59,11 +60,17 @@ public class ReturnGamePage extends JFrame {
                 if (selectedLoan != null) {
                     selectedLoan.setOngoing(false);
                     selectedLoan.setBorrower(player);
-                    selectedLoan.UpdateLoan(selectedLoan);
-
-                    MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
-                    myBorrowingsPage.setVisible(true);
-                    dispose();
+                    if(selectedLoan.UpdateLoan(selectedLoan)) {
+                    	selectedLoan.getCopy().setAvailable(true);
+                    	if(Copy.Update(selectedLoan.getCopy())){
+                    		MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
+                            myBorrowingsPage.setVisible(true);
+                            dispose();
+                    	}else {
+                    		lb_error.setText("Error while updating the copy");
+                    	}
+                    	lb_error.setText("Error while updating the loan");
+                    }  
                 }
             }
         });
