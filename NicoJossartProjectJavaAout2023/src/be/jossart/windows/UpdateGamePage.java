@@ -32,7 +32,7 @@ public class UpdateGamePage extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel titleLabel = new JLabel("This is the available games");
+        JLabel titleLabel = new JLabel("Which game do you want to update its credits?");
         titleLabel.setBounds(10, 12, 269, 13);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(titleLabel);
