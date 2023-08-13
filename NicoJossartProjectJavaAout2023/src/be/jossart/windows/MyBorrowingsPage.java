@@ -45,12 +45,12 @@ public class MyBorrowingsPage extends JFrame {
             
             if(loan.isOngoing()) {
             	if(daysLate > 0) {
-                	// Decrease the player's credits by the value of the game
-                	player.setCredit(player.getCredit() - loan.getCopy().getVideoGame().getCreditCost());
+                	// Decrease the player's credits by 5
+                	player.setCredit(player.getCredit() - 5);
                 	player.UpdateCredit(player);
                 	
-                	// Increase game owner credits by game value
-                	loan.getCopy().getOwner().setCredit(loan.getCopy().getOwner().getCredit() + loan.getCopy().getVideoGame().getCreditCost());
+                	// Increase game owner credits by 5
+                	loan.getCopy().getOwner().setCredit(loan.getCopy().getOwner().getCredit() + 5);
                 	loan.getCopy().getOwner().UpdateCredit(loan.getCopy().getOwner());
                 }
             }
