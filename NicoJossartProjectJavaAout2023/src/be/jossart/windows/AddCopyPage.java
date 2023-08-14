@@ -2,6 +2,7 @@ package be.jossart.windows;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -12,7 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import be.jossart.pojo.Booking;
 import be.jossart.pojo.Copy;
+import be.jossart.pojo.Loan;
 import be.jossart.pojo.Player;
 import be.jossart.pojo.VideoGame;
 
@@ -78,6 +81,36 @@ public class AddCopyPage extends JFrame {
                 VideoGame selectedGame = (VideoGame) gameComboBox.getSelectedItem();
                 Copy copy = new Copy(selectedGame, player);
                 if(copy.AddCopy(copy)) {
+                	Booking booking = Booking.Find(copy.getVideoGame().getId_videogame());
+                	
+                	if(booking != null) {
+                		int creditCost = Copy.CalculateCreditCost(copy, booking.getNbrWeeksRent());
+                		LocalDate startDate = LocalDate.now();
+                		LocalDate EndDate = startDate.plusWeeks(booking.getNbrWeeksRent());
+                		
+                		if (booking.getPlayer().getCredit() >= creditCost) {
+            				// Decrease credits to borrower
+                			booking.getPlayer().setCredit(booking.getPlayer().getCredit() - creditCost);
+                			booking.getPlayer().UpdateCredit(booking.getPlayer());
+
+                			copy = Copy.FindByVideoGame(booking.getGame().getId_videogame());
+            				
+                			copy.setAvailable(false);
+            				copy.UpdateAvailable(copy);
+
+            				
+            				// Add credits to lender
+            				copy.getOwner().setCredit(copy.getOwner().getCredit() + creditCost);
+            				copy.getOwner().UpdateCredit(copy.getOwner());
+
+            				// Add loan
+            				Loan loan = new Loan(startDate, EndDate, booking.getPlayer(), copy);
+            				loan.setOngoing(true);
+            				if(Loan.AddLoan(loan)) {
+            					Booking.Delete(booking);
+            				}
+            			}
+                	}
                 	PlayerPage playerPage = new PlayerPage(player);
                 	playerPage.setVisible(true);
                     dispose();

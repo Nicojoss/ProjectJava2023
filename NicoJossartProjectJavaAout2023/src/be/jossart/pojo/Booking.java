@@ -29,6 +29,13 @@ public class Booking implements Serializable{
 		this.nbrWeeksRent = nbrWeeksRent;
 		this.game = game;
 	}
+	public Booking(int idbooking, LocalDate date_booking, int nbrWeeksRent, VideoGame game, Player player) {
+		this.idBooking = idbooking;
+		this.bookingDate = date_booking;
+		this.nbrWeeksRent = nbrWeeksRent;
+		this.game = game;
+		this.player = player;
+	}
 	// Get Set
 	public int getIdBooking() {
 		return idBooking;
@@ -73,6 +80,15 @@ public class Booking implements Serializable{
 		DAO<Booking> bookingDAO = adf.getBookingDAO();
 		return bookingDAO.findAll();
 	}
-	
-
+	public static Booking Find(int idCopy) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Booking> bookingDAO = adf.getBookingDAO();
+		return bookingDAO.find(idCopy);
+	}
+	public static boolean Delete(Booking booking) {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
+		DAO<Booking> bookingDAO = adf.getBookingDAO();
+		return bookingDAO.delete(booking);
+		
+	}
 }

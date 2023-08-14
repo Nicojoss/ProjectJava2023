@@ -102,5 +102,8 @@ public class Copy implements Serializable{
 		return (selectedCopy.getVideoGame().getCreditCost()) * nbrWeeksRent;
 		
 	}
+	public static Copy FindByVideoGame(int id_videogame) {
+		return CopyDAO.findByVideoGame(id_videogame);
+	}
 	
 }

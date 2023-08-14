@@ -115,15 +115,16 @@ public class PlayerPage extends JFrame {
         contentPane.add(birthdayLabel);
         getContentPane().add(birthdayLabel);
         
-        LocalDate lastBirthdayDate = player.getDateRegistration();
-        if(lastBirthdayDate == null || lastBirthdayDate.getDayOfMonth() == today.getDayOfMonth() && lastBirthdayDate.getMonth() == today.getMonth()) {
-        	player.setLastBirthdayDate(today);
-        	Player.UpdateLastBirthdayDate(player);
-        	
-        	player.setCredit(player.getCredit() + 2);
-        	player.UpdateCredit(player);
-            
-            birthdayLabel.setText("Happy Birthday (register date)! You have received 2 credits as a gift!");
+        LocalDate lastBirthdayDate = player.getLastBirthdayDate();
+        if(lastBirthdayDate == null || !lastBirthdayDate.isEqual(today)) {
+        	if (player.getDateRegistration().getDayOfMonth() == today.getDayOfMonth() && player.getDateRegistration().getMonth() == today.getMonth()) {
+        		player.setLastBirthdayDate(today);
+            	Player.UpdateLastBirthdayDate(player);
+            	
+            	player.setCredit(player.getCredit() + 2);
+            	player.UpdateCredit(player);
+            	birthdayLabel.setText("Happy Birthday (register date)! You have received 2 credits as a gift!");
+        	}   
         }
 		
 	}

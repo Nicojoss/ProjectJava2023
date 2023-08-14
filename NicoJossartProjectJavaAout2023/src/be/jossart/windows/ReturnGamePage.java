@@ -3,6 +3,7 @@ package be.jossart.windows;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import be.jossart.pojo.Booking;
 import be.jossart.pojo.Copy;
 import be.jossart.pojo.Loan;
 import be.jossart.pojo.Player;
@@ -63,6 +65,34 @@ public class ReturnGamePage extends JFrame {
                     if(selectedLoan.UpdateLoan(selectedLoan)) {
                     	selectedLoan.getCopy().setAvailable(true);
                     	if(Copy.Update(selectedLoan.getCopy())){
+                    		Booking booking = Booking.Find(selectedLoan.getCopy().getVideoGame().getId_videogame());
+                        	
+                        	if(booking != null) {
+                        		int creditCost = Copy.CalculateCreditCost(selectedLoan.getCopy(), booking.getNbrWeeksRent());
+                        		LocalDate startDate = LocalDate.now();
+                        		LocalDate EndDate = startDate.plusWeeks(booking.getNbrWeeksRent());
+                        		
+                        		if (booking.getPlayer().getCredit() >= creditCost) {
+                    				// Decrease credits to borrower
+                        			booking.getPlayer().setCredit(booking.getPlayer().getCredit() - creditCost);
+                        			booking.getPlayer().UpdateCredit(booking.getPlayer());
+                    				
+                        			selectedLoan.getCopy().setAvailable(false);
+                        			selectedLoan.getCopy().UpdateAvailable(selectedLoan.getCopy());
+
+                    				
+                    				// Add credits to lender
+                        			selectedLoan.getCopy().getOwner().setCredit(selectedLoan.getCopy().getOwner().getCredit() + creditCost);
+                        			selectedLoan.getCopy().getOwner().UpdateCredit(selectedLoan.getCopy().getOwner());
+
+                    				// Add loan
+                    				Loan loan = new Loan(startDate, EndDate, booking.getPlayer(), selectedLoan.getCopy());
+                    				loan.setOngoing(true);
+                    				if(Loan.AddLoan(loan)) {
+                    					Booking.Delete(booking);
+                    				}
+                    			}
+                        	}
                     		MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
                             myBorrowingsPage.setVisible(true);
                             dispose();

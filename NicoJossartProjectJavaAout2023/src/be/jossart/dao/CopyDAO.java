@@ -27,7 +27,7 @@ public class CopyDAO extends DAO<Copy> {
 	        stmt.setInt(1, obj.getVideoGame().getId_videogame());
 	        stmt.setInt(2, obj.getOwner().getIdUser());
 	        stmt.setBoolean(3, true);
-
+	   
 	        int result = stmt.executeUpdate();
 	        
 	        success = result > 0;
@@ -156,5 +156,32 @@ public class CopyDAO extends DAO<Copy> {
 	    }
 		
 	    return success;
+	}
+
+	public static Copy findByVideoGame(int id_videogame) {
+		Copy copy = null;
+		Connection connect = DbConnection.getInstance();
+		
+		String query = "SELECT * FROM Copy WHERE Id_videogame = ?";
+	    
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id_videogame);
+	        ResultSet result = preparedStatement.executeQuery();
+	        
+	        if (result.next()) {
+	            int copyId = result.getInt("id_copy");
+	            int id_game = result.getInt("Id_videogame");
+	            int id_owner = result.getInt("id_user");
+	            
+	            VideoGame game = VideoGame.findById(id_game);
+	            Player copyOwner = Player.findById(id_owner);
+	            
+	            copy = new Copy(copyId, game, copyOwner);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return copy;
 	}
 }

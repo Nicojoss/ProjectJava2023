@@ -87,7 +87,7 @@ public class Loan implements Serializable{
 	}
 	
 	//Methodes 
-	public boolean AddLoan(Loan loan) {
+	public static boolean AddLoan(Loan loan) {
 		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
 		DAO<Loan> loanDAO = adf.getLoanDAO();
 		return loanDAO.create(loan);

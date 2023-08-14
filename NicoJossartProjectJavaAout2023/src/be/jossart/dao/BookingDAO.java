@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import be.jossart.connection.DbConnection;
 import be.jossart.pojo.Booking;
+import be.jossart.pojo.Player;
 import be.jossart.pojo.VideoGame;
 
 public class BookingDAO extends DAO<Booking> {
@@ -43,7 +44,20 @@ public class BookingDAO extends DAO<Booking> {
 
 	@Override
 	public boolean delete(Booking obj) {
-		return false;
+	    boolean success = false;
+	    
+	    String query = "DELETE FROM Booking WHERE Id_booking = ?";
+
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        preparedStatement.setInt(1, obj.getIdBooking());
+
+	        int result = preparedStatement.executeUpdate();
+	        success = result > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return success;
 	}
 
 	@Override
@@ -53,7 +67,32 @@ public class BookingDAO extends DAO<Booking> {
 
 	@Override
 	public Booking find(int id) {
-		return null;
+	    Booking booking = null;
+	    
+	    String query = "SELECT * FROM Booking WHERE Id_videogame = ?";
+	        
+	    try {
+	        try (PreparedStatement stmt = this.connect.prepareStatement(query)) {
+	            stmt.setInt(1, id);
+	            ResultSet resultSet = stmt.executeQuery();
+
+	            if (resultSet.next()) {
+	                int idbooking = resultSet.getInt("Id_booking");
+	                LocalDate date_booking = resultSet.getDate("Date_booking").toLocalDate();
+	                int nbrWeeksRent = resultSet.getInt("NbrWeeksRent");
+	                int idGame = resultSet.getInt("Id_videogame");
+	                int idPlayer = resultSet.getInt("id_user");
+	                VideoGame game = VideoGame.findById(idGame);
+	                Player player = Player.findById(idPlayer);
+
+	                booking = new Booking(idbooking, date_booking, nbrWeeksRent, game, player);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return booking;
 	}
 
 	@Override

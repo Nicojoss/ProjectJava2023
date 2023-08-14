@@ -114,7 +114,7 @@ public class RentCopyPage extends JFrame {
                 				// Add loan
                 				Loan loan = new Loan(StartDate, EndDate, player, selectedCopy);
                 				loan.setOngoing(true);
-                				if(loan.AddLoan(loan)) {
+                				if(Loan.AddLoan(loan)) {
                 					PlayerPage playerPage = new PlayerPage(player);
         	                        playerPage.setVisible(true);
         	                        dispose();
