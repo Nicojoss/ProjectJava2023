@@ -21,11 +21,12 @@ public class CopyDAO extends DAO<Copy> {
 	@Override
 	public boolean create(Copy obj) {
 		boolean success = false;
-		String query = "INSERT INTO Copy (Id_videogame, id_user) VALUES (?, ?)";
+		String query = "INSERT INTO Copy (Id_videogame, id_user, Available) VALUES (?, ?, ?)";
 
 	    try (PreparedStatement stmt = this.connect.prepareStatement(query)) {
 	        stmt.setInt(1, obj.getVideoGame().getId_videogame());
 	        stmt.setInt(2, obj.getOwner().getIdUser());
+	        stmt.setBoolean(3, true);
 
 	        int result = stmt.executeUpdate();
 	        
@@ -96,8 +97,8 @@ public class CopyDAO extends DAO<Copy> {
 		ArrayList<Copy> CopyList = new ArrayList<Copy>();
 		
 		String query = "SELECT * FROM Copy "
-				+ "Inner join Player On Copy.id_user = Player.id_user "
-				+ "Inner Join VideoGame on Copy.Id_videogame = VideoGame.Id_videogame";
+				+ "Inner Join Player On Copy.id_user = Player.id_user "
+				+ "Inner Join VideoGame On Copy.Id_videogame = VideoGame.Id_videogame";
         
 		try {
             

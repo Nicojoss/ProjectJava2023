@@ -89,17 +89,18 @@ public class RentCopyPage extends JFrame {
                 
                 
              // 1: Check if the copy belongs to the player
-                if (selectedCopy.getOwner().equals(player)) {
+                if (selectedCopy.getOwner().getIdUser() == (player.getIdUser())) {
                     lb_error.setText("You cannot rent a copy that belongs to you!");
                     return;
                 }else {
                 	// 2: Check if he enters a number of week between 1 and 4
                 	if (nbrWeeksRent >= 1 && nbrWeeksRent <= 4) {
-                		int creditCost = (selectedCopy.getVideoGame().getCreditCost()) * nbrWeeksRent;
+                		int creditCost = Copy.CalculateCreditCost(selectedCopy, nbrWeeksRent);
                 		EndDate = StartDate.plusWeeks(nbrWeeksRent);
                 		// 3: check if the copy is available
                 		if (selectedCopy.getAvailable()) {
                 			if (player.getCredit() >= creditCost) {
+                				// Decrease credits to borrower
                 				player.setCredit(player.getCredit() - creditCost);
                 				player.UpdateCredit(player);
 

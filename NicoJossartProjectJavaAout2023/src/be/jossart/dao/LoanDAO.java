@@ -104,7 +104,12 @@ public class LoanDAO extends DAO<Loan> {
 	                LocalDate startDate = resultSet.getDate("start_date").toLocalDate();
 	                LocalDate endDate = resultSet.getDate("end_date").toLocalDate();
 	                int copyId = resultSet.getInt("Id_copy");
-	                LocalDate lastPenaltyDate = resultSet.getDate("LastPenaltyDate").toLocalDate();
+	                
+	                LocalDate lastPenaltyDate = null;
+	                java.sql.Date lastPenaltyDateSql = resultSet.getDate("LastPenaltyDate");
+	                if(lastPenaltyDateSql != null) {
+	                	lastPenaltyDate = lastPenaltyDateSql.toLocalDate();
+	                }
 	                
 	                if(onGoing) {
 	                	Copy copy = Copy.FindByID(copyId); 

@@ -77,7 +77,7 @@ public class ReturnGamePage extends JFrame {
         contentPane.add(returnButton);
 
         JButton backButton = new JButton("Back to My Borrowings Page");
-        backButton.setBounds(10, 10, 161, 21);
+        backButton.setBounds(10, 10, 292, 21);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);

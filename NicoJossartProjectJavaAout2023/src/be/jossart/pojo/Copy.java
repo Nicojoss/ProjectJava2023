@@ -90,12 +90,16 @@ public class Copy implements Serializable{
 	
 	@Override
     public String toString() {
-        return "Game: " + getVideoGame().getName() + " Console: " + getVideoGame().getConsole() + " credits: " + getVideoGame().getCreditCost();
+        return "Owner:" + owner.getPseudo() +"  Game: " + getVideoGame().getName() + " Console: " + getVideoGame().getConsole() + " credits: " + getVideoGame().getCreditCost();
     }
 	public static boolean Update(Copy copy) {
 		AbstractDAOFactory adf = AbstractDAOFactory.getFactory();
 		DAO<Copy> copyDAO = adf.getCopyDAO();
 		return copyDAO.update(copy);
+		
+	}
+	public static int CalculateCreditCost(Copy selectedCopy, int nbrWeeksRent) {
+		return (selectedCopy.getVideoGame().getCreditCost()) * nbrWeeksRent;
 		
 	}
 	

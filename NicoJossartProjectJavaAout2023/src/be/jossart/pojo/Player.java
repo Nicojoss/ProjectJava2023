@@ -16,6 +16,7 @@ public class Player extends Users{
 	private ArrayList<Copy> copies;
 	private ArrayList<Loan> loans;
 	private ArrayList<Booking> bookings;
+	private LocalDate lastBirthdayDate;
 	
 	//CTOR
 	public Player() {
@@ -27,15 +28,23 @@ public class Player extends Users{
 	}
 	//GET SET
 
-	public Player(int id, String pseudo, int credit) {
+	public Player(int id, String pseudo, int credit, LocalDate lastBirthdayDate) {
 		super(id);
 		this.pseudo = pseudo;
 		this.credit = credit;
+		this.lastBirthdayDate = lastBirthdayDate;
 	}
 
 	public Player(String pseudo, String username, String password, LocalDate birthday) {
 		super(username, password, birthday);
 		this.pseudo = pseudo;
+		this.lastBirthdayDate = birthday;
+	}
+
+	public Player(int id, String pseudo, int credit) {
+		super(id);
+		this.pseudo = pseudo;
+		this.credit = credit;
 	}
 
 	public int getCredit() {
@@ -93,7 +102,15 @@ public class Player extends Users{
 	public void setBookings(ArrayList<Booking> bookings) {
 		this.bookings = bookings;
 	}
+	public LocalDate getLastBirthdayDate() {
+		return lastBirthdayDate;
+	}
 
+	public void setLastBirthdayDate(LocalDate lastBirthdayDate) {
+		this.lastBirthdayDate = lastBirthdayDate;
+	}
+	
+	//Methodes
 	public boolean UpdateCredit(Player player) {
 		return PlayerDAO.UpdateCredit(player);
 		
@@ -104,4 +121,11 @@ public class Player extends Users{
 		DAO<Player> playerDAO = adf.getPlayerDAO();
 		return playerDAO.find(id_owner);
 	}
+
+	public static boolean UpdateLastBirthdayDate(Player player) {
+		return PlayerDAO.UpdateLastBirthdayDate(player);
+		
+	}
+
+	
 }

@@ -111,15 +111,19 @@ public class PlayerPage extends JFrame {
         
         birthdayLabel.setForeground(Color.GREEN);
         birthdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        birthdayLabel.setBounds(234, 10, 500, 20);
+        birthdayLabel.setBounds(188, 10, 546, 20);
         contentPane.add(birthdayLabel);
         getContentPane().add(birthdayLabel);
         
-        if(player.getDateRegistration().isEqual(today)) {
+        LocalDate lastBirthdayDate = player.getDateRegistration();
+        if(lastBirthdayDate == null || lastBirthdayDate.getDayOfMonth() == today.getDayOfMonth() && lastBirthdayDate.getMonth() == today.getMonth()) {
+        	player.setLastBirthdayDate(today);
+        	Player.UpdateLastBirthdayDate(player);
+        	
         	player.setCredit(player.getCredit() + 2);
         	player.UpdateCredit(player);
             
-            birthdayLabel.setText("Happy Birthday! You have received 2 credits as a gift!");
+            birthdayLabel.setText("Happy Birthday (register date)! You have received 2 credits as a gift!");
         }
 		
 	}

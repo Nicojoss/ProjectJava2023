@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import be.jossart.connection.DbConnection;
@@ -26,19 +25,14 @@ public class PlayerDAO extends DAO<Player>{
 		
 		String query = "INSERT INTO Users (Username,Password,Date_registration) VALUES (?,?,?)";
 		String query2 = "SELECT id_user FROM Users WHERE Username = ?";
-		String query3 = "INSERT INTO Player (id_user,Credit,Pseudo) VALUES (?,?,?)";
+		String query3 = "INSERT INTO Player (id_user,Credit,Pseudo, LastBirthdayDate) VALUES (?,?,?,?)";
 		
 		try {
 			PreparedStatement stmt = (PreparedStatement)this.connect.prepareStatement(query);
 			
 			stmt.setString(1, obj.getUsername());
 			stmt.setString(2, obj.getPassword());
-			
-			LocalDate localDate = obj.getDateRegistration();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			String formattedDate = localDate.format(formatter);
-			
-			stmt.setString(3, formattedDate);
+			stmt.setDate(3, java.sql.Date.valueOf(obj.getDateRegistration()));
 			
 			stmt.execute();
 			stmt.close();
@@ -57,6 +51,7 @@ public class PlayerDAO extends DAO<Player>{
 	        stmt3.setInt(1, id);
 	        stmt3.setInt(2, 10);
 	        stmt3.setString(3, obj.getPseudo());
+	        stmt3.setDate(4, java.sql.Date.valueOf(obj.getDateRegistration()));
 	        
 	        stmt3.execute();
 	        stmt3.close();
@@ -89,7 +84,8 @@ public class PlayerDAO extends DAO<Player>{
 			if(result.first()){
 				String pseudo = result.getString("Pseudo");
 				int credit = result.getInt("Credit");
-				Users player = new Player(id, pseudo, credit);
+				LocalDate lastBirthdayDate = result.getDate("LastBirthdayDate").toLocalDate();
+				Users player = new Player(id, pseudo, credit, lastBirthdayDate);
 				return (Player) player;
 			}
 		} catch (SQLException e) {
@@ -121,5 +117,26 @@ public class PlayerDAO extends DAO<Player>{
         }
 
         return success;
+	}
+
+	public static boolean UpdateLastBirthdayDate(Player obj) {
+		boolean success = false;
+		Connection connect = DbConnection.getInstance();
+		
+	    String query = "UPDATE Player SET LastBirthdayDate = ? WHERE id_user = ?";
+
+	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	    	preparedStatement.setDate(1, java.sql.Date.valueOf(obj.getLastBirthdayDate()));
+	    	preparedStatement.setInt(2, obj.getIdUser());
+	         
+	        
+	        int result = preparedStatement.executeUpdate();
+	        success = result > 0;
+	        preparedStatement.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return success;
 	}
 }
