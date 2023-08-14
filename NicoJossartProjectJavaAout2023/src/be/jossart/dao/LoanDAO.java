@@ -16,14 +16,13 @@ public class LoanDAO extends DAO<Loan> {
 
 	public LoanDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean create(Loan obj) {
 		boolean success = false;
 
-	    String query = "INSERT INTO Loan (id_lender, id_borrower, id_copy, start_date, end_date, Ongoing) VALUES (?, ? , ?, ?, ?, ?)";
+	    String query = "INSERT INTO Loan (id_lender, id_borrower, Id_copy, Start_date, End_date, Ongoing) VALUES (?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 	        preparedStatement.setInt(1, obj.getLender().getIdUser());
@@ -31,7 +30,8 @@ public class LoanDAO extends DAO<Loan> {
 	        preparedStatement.setInt(3, obj.getCopy().getIdCopy());
 	        preparedStatement.setDate(4, java.sql.Date.valueOf(obj.getStartDate()));
 	        preparedStatement.setDate(5, java.sql.Date.valueOf(obj.getEndDate()));
-	        preparedStatement.setBoolean(6, true);
+	        preparedStatement.setBoolean(6, obj.isOngoing());
+	        
 
 	        int result = preparedStatement.executeUpdate();
 	        success = result > 0;
