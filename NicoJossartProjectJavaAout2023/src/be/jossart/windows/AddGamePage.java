@@ -69,7 +69,7 @@ public class AddGamePage extends JFrame {
         tfCreditCost.setColumns(10);
         
         lbError = new JLabel("");
-        lbError.setBounds(23, 55, 200, 20);
+        lbError.setBounds(23, 55, 403, 20);
         lbError.setForeground(Color.RED);
         contentPane.add(lbError);
         
@@ -84,8 +84,8 @@ public class AddGamePage extends JFrame {
                 	creditCost = Integer.parseInt(stringCreditCost);
                 }
                  
-                if (name.isEmpty() || console.isEmpty() ||  creditCost <=0) {
-                    lbError.setText("Please fill in all fields and creditCost > 0");
+                if (name.isEmpty() || console.isEmpty() ||  creditCost <=0 || creditCost > 5) {
+                    lbError.setText("Please fill in all fields and  creditCost between 1 and 5 ");
                 } else {
                     try {    
     	                
