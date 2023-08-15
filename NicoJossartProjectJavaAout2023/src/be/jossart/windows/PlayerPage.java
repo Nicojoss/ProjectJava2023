@@ -29,7 +29,7 @@ public class PlayerPage extends JFrame {
 	JButton backButton = new JButton("Return HomePage");
 	JLabel lblTitle = new JLabel("Welcome to the site here are the games you can add a copy or make a reservation");
 	JButton addCopyButton = new JButton("Add Copy");
-	JButton rentCopyButton = new JButton("Rent Copy");
+	JButton rentCopyButton = new JButton("See available copy");
 	JButton myBorrowingsButton = new JButton("My Borrowings");
 	JButton myBookingsButton = new JButton("My Bookings");
 	LocalDate today = LocalDate.now();
@@ -79,7 +79,7 @@ public class PlayerPage extends JFrame {
         });
         contentPane.add(addCopyButton);
         
-        rentCopyButton.setBounds(140, 480, 100, 25);
+        rentCopyButton.setBounds(140, 480, 150, 25);
         rentCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RentCopyPage rentCopyPage = new RentCopyPage(player);
@@ -89,7 +89,7 @@ public class PlayerPage extends JFrame {
         });
         contentPane.add(rentCopyButton);
         
-        myBorrowingsButton.setBounds(257, 480, 121, 25);
+        myBorrowingsButton.setBounds(342, 480, 121, 25);
         myBorrowingsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MyBorrowingsPage myBorrowingsPage = new MyBorrowingsPage(player);
@@ -99,7 +99,7 @@ public class PlayerPage extends JFrame {
         });
         contentPane.add(myBorrowingsButton);
         
-        myBookingsButton.setBounds(399, 480, 121, 25);
+        myBookingsButton.setBounds(482, 480, 121, 25);
         myBookingsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MyBookingsPage myBorrowingsPage = new MyBookingsPage(player);

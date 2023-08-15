@@ -37,7 +37,7 @@ public class RegisterPage extends JFrame{
 		contentPane.setLayout(null);
 		
 		JLabel lblTitle = new JLabel("Register page");
-		lblTitle.setBounds(23, 35, 87, 20);
+		lblTitle.setBounds(23, 35, 110, 20);
 		lblTitle.setFont(new Font("Calibri Light", Font.PLAIN, 16));
 		contentPane.add(lblTitle);
 		
@@ -102,7 +102,7 @@ public class RegisterPage extends JFrame{
         });
         contentPane.add(registerButton);
 		
-		backButton.setBounds(10, 8, 95, 21);
+		backButton.setBounds(10, 8, 134, 21);
 	    backButton.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            Home homePage = new Home();

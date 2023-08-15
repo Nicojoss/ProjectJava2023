@@ -1,5 +1,6 @@
 package be.jossart.windows;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import be.jossart.pojo.Booking;
@@ -28,6 +30,7 @@ public class AddCopyPage extends JFrame {
     JLabel lblGameDetails = new JLabel("Game Details:");
     JTextArea txtGameDetails = new JTextArea();
     JButton backButton = new JButton("Return PlayerPage");
+    JLabel lb_error = new JLabel("");
 
 	public AddCopyPage(List<VideoGame> videoGameList, Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,6 +40,11 @@ public class AddCopyPage extends JFrame {
 
 		setContentPane(contentPane);
 	    contentPane.setLayout(null);
+	    
+	    lb_error.setForeground(Color.RED);
+		lb_error.setHorizontalAlignment(SwingConstants.CENTER);
+		lb_error.setBounds(98, 57, 414, 14);
+		getContentPane().add(lb_error);
 		
 	    backButton.setBounds(119, 10, 146, 21);
 		backButton.addActionListener(new ActionListener() {
@@ -114,6 +122,8 @@ public class AddCopyPage extends JFrame {
                 	PlayerPage playerPage = new PlayerPage(player);
                 	playerPage.setVisible(true);
                     dispose();
+                }else {
+                	lb_error.setText("Error during the add copy to the database");
                 }
 				
                 dispose();
